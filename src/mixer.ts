@@ -197,6 +197,6 @@ async function finalReveal(blockNumber:number, logger = noopLogger) {
 }
 
 //standard beacon reveal
-void revealStandardBeacons(14497150, consoleLogger);
+void revealStandardBeacons(14497878, consoleLogger);
 
 
