@@ -115,6 +115,12 @@ async function revealRareBeacons(blockNumber:number, logger = noopLogger) {
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.ETH_ENDPOINT);
     const block = await provider.getBlock(blockNumber);
+    if(!block) {
+        logger.error(`Could not find block number: ${blockNumber}`);
+        const latest = await provider.getBlock("latest");
+        logger.info(`Latest block number: ${latest.number}`);
+        return;
+    }
     const seed = block.hash;
 
     //load data from previous run
@@ -197,6 +203,8 @@ async function finalReveal(blockNumber:number, logger = noopLogger) {
 }
 
 //standard beacon reveal
-void revealStandardBeacons(14497878, consoleLogger);
+//void revealStandardBeacons(14497878, consoleLogger);
 
 
+//rare beacon reveal block: 14517290
+void revealRareBeacons(14517290, consoleLogger);
