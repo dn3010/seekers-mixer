@@ -160,7 +160,13 @@ async function finalReveal(blockNumber:number, logger = noopLogger) {
     const remaining = 0;
 
     const provider = new ethers.providers.JsonRpcProvider(process.env.ETH_ENDPOINT);
-    const block = await provider.getBlock('latest');
+    const block = await provider.getBlock(blockNumber);
+    if(!block) {
+        logger.error(`Could not find block number: ${blockNumber}`);
+        const latest = await provider.getBlock("latest");
+        logger.info(`Latest block number: ${latest.number}`);
+        return;
+    }
     const seed = block.hash;
 
     const {tokens, totalStandard, totalRare} = JSON.parse(fs.readFileSync("reveal/Rare_Reveal.json").toString()) as {
@@ -198,13 +204,14 @@ async function finalReveal(blockNumber:number, logger = noopLogger) {
         totalUltra,
         tokens: finalList.map((beacon, index) => ({ tokenId:index+1, beacon }))
     };
-
     fs.writeFileSync("reveal/Final_Reveal.json", JSON.stringify(output));
 }
 
 //standard beacon reveal
 //void revealStandardBeacons(14497878, consoleLogger);
 
-
 //rare beacon reveal block: 14517290
-void revealRareBeacons(14517290, consoleLogger);
+//void revealRareBeacons(14517290, consoleLogger);
+
+//mythic reveal 14542159
+void finalReveal(14542159, consoleLogger);
